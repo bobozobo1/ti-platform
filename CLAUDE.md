@@ -98,7 +98,7 @@ Node מסווג שמגיע ל-browser ומוסתר ב-CSS = דליפה. Network 
 
 ### Infrastructure
 - **Supabase** — Postgres + Auth + **RLS** (קריטי ל-ABAC) + real-time
-- Vercel (frontend) · Railway (backend) · GitHub Actions (CI/CD)
+- Vercel (frontend) · Render (backend) · GitHub Actions (CI/CD)
 
 ### Testing
 - Playwright (E2E + denial tests) · Vitest (frontend unit) · pytest (backend unit)
