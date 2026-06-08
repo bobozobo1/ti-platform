@@ -167,26 +167,36 @@ ti-platform/
 
 ## 6. ABAC — סיכום מהיר
 
+> ⚠️ המודל המלא ב-`docs/SECURITY-MODEL.md` (חובה לקרוא). הסעיף הזה = תמצית לעיון מהיר.
+
 ### 3 ממדי הרשאה (AND לוגי — כולם חייבים להתקיים)
-1. **Clearance** ≥ Classification של ה-object
-2. **TLP clearance** ≥ TLP marking של ה-object
-3. **Permission** מפורש לפעולה (read/write/promote/export/revoke/admin)
+1. **Permission Level** — רמת הרשאה לפי מודול (RBAC-style)
+2. **Need-to-Know (NTK)** — גישה מפורשת לחקירה ספציפית
+3. **TLP** — רמת רגישות המידע עצמו (TLP 2.0)
 
-### Clearance Levels
-`UNCLASSIFIED` → `CONFIDENTIAL` → `SECRET` → `TOP SECRET`
+### Permission Levels (סדר עולה)
+`reader(1)` → `analyst(2)` → `senior_analyst(3)` → `lead_analyst(4)` → `admin(5)`
+- `auditor` — תפקיד נפרד (read-only לכל + audit log, ללא NTK bypass)
 
-### TLP Levels
-`WHITE` → `GREEN` → `AMBER` → `RED`
+### TLP Levels (TLP 2.0 — סדר עולה)
+`CLEAR` → `GREEN` → `AMBER` → `AMBER+STRICT` → `RED`
+
+### Need-to-Know
+- כל חקירה (investigation) מוגנת ב-NTK — רשימת גישה מפורשת
+- יוצר החקירה = owner אוטומטי
+- Admin **לא** bypasses NTK — חייב לקבל גישה מפורשת
+- `tlp_red_recipients` — גישה מפורשת לתוכן TLP:RED
 
 ### Deny Behavior — קריטי
-- מידע מוגבל מחזיר תמיד **`404 Not Found`**
-- לעולם לא `403 Access Denied`
-- הבחנה ביניהם = Information Disclosure = דליפה
-- constant-time response (מניעת Timing Attack)
+- גישה אסורה מחזירה תמיד **`404 Not Found`** — לעולם לא `403`
+- הבחנה בין 404 ל-403 = Information Disclosure = דליפה
+- Constant-time response (~50ms minimum) — מניעת Timing Attack
+- TLP:RED object עם NTK לcontainer → **Placeholder** (קיום נראה, תוכן מוסתר)
 
 ### Policy Engine
 נקודה מרכזית אחת ב-`backend/app/core/security.py`.
 כל endpoint עובר דרכו. אין בדיקות מפוזרות.
+החלטה אפשרית: `ALLOW` · `DENY` · `PLACEHOLDER`
 
 ---
 
@@ -238,19 +248,25 @@ Types: `feat` · `fix` · `refactor` · `test` · `docs` · `chore` · **`securi
 ## 9. Status נוכחי
 
 ### גל נוכחי
-**גל 1 — Secure Foundation** · שלב: [עדכן]
+**גל 1 — Secure Foundation** · שלב: 1.2 — תשתית בסיסית
 
 ### מה כבר עובד
-- [עדכן אחרי כל שלב]
+- ✅ GitHub repo: `bobozobo1/ti-platform` (main branch)
+- ✅ כל מסמכי הדוקומנטציה ב-`docs/` (SECURITY-MODEL, MASTER-PLAN, EXECUTION-GUIDE, DECISIONS, PROMPTS)
+- ✅ `docs/SECURITY-MODEL.md` v1.0 — מודל ABAC מלא (663 שורות, 8 סעיפים)
 
 ### בעבודה כרגע
-- Setup ראשוני
+- שלב 1.2 — תשתית בסיסית (repo structure + frontend ריק + backend ריק + deployments)
 
 ### Known Issues
-- [עדכן]
+- `docs/PRD-v2.md` — placeholder בלבד (קובץ .docx לא הומר עדיין)
 
 ### TODOs
-- [עדכן]
+- [ ] פתיחת חשבון Supabase + יצירת project
+- [ ] פתיחת חשבון Vercel (לfrontend)
+- [ ] פתיחת חשבון Render (לbackend)
+- [ ] API keys: VirusTotal, AbuseIPDB, WhoisXML
+- [ ] המרת PRD-v2.docx ל-Markdown
 
 ---
 
@@ -291,4 +307,4 @@ Types: `feat` · `fix` · `refactor` · `test` · `docs` · `chore` · **`securi
 
 ---
 
-**עדכון אחרון:** [תאריך] · **גרסה:** v1.0 · **גל נוכחי:** גל 1
+**עדכון אחרון:** 2026-06-08 · **גרסה:** v1.1 · **גל נוכחי:** גל 1 שלב 1.2
