@@ -248,25 +248,31 @@ Types: `feat` · `fix` · `refactor` · `test` · `docs` · `chore` · **`securi
 ## 9. Status נוכחי
 
 ### גל נוכחי
-**גל 1 — Secure Foundation** · שלב: 1.2 — תשתית בסיסית
+**גל 1 — Secure Foundation** · שלב: 1.3 — ABAC Layer
 
 ### מה כבר עובד
 - ✅ GitHub repo: `bobozobo1/ti-platform` (main branch)
 - ✅ כל מסמכי הדוקומנטציה ב-`docs/` (SECURITY-MODEL, MASTER-PLAN, EXECUTION-GUIDE, DECISIONS, PROMPTS)
 - ✅ `docs/SECURITY-MODEL.md` v1.0 — מודל ABAC מלא (663 שורות, 8 סעיפים)
+- ✅ Frontend deployed: https://ti-platform.vercel.app
+- ✅ Backend deployed: https://ti-platform-backend.onrender.com/health
+- ✅ Supabase project פעיל
+- ✅ GitHub Actions CI מוגדר (lint + tests על כל PR)
+- ✅ `.env.example` מתועד
 
 ### בעבודה כרגע
-- שלב 1.2 — תשתית בסיסית (repo structure + frontend ריק + backend ריק + deployments)
+- שלב 1.3 — ABAC Layer (DB schema + RLS policies + Policy Engine)
 
 ### Known Issues
 - `docs/PRD-v2.md` — placeholder בלבד (קובץ .docx לא הומר עדיין)
+- Backend deps מצומצמות זמנית (fastapi+uvicorn בלבד) — supabase/stix2 יתווספו בשלב 1.3
 
 ### TODOs
-- [ ] פתיחת חשבון Supabase + יצירת project
-- [ ] פתיחת חשבון Vercel (לfrontend)
-- [ ] פתיחת חשבון Render (לbackend)
 - [ ] API keys: VirusTotal, AbuseIPDB, WhoisXML
 - [ ] המרת PRD-v2.docx ל-Markdown
+- [ ] שלב 1.3: DB schema ב-Supabase (migrations)
+- [ ] שלב 1.3: RLS policies
+- [ ] שלב 1.3: Policy Engine (backend/app/core/security.py)
 
 ---
 
@@ -307,4 +313,4 @@ Types: `feat` · `fix` · `refactor` · `test` · `docs` · `chore` · **`securi
 
 ---
 
-**עדכון אחרון:** 2026-06-08 · **גרסה:** v1.1 · **גל נוכחי:** גל 1 שלב 1.2
+**עדכון אחרון:** 2026-06-10 · **גרסה:** v1.2 · **גל נוכחי:** גל 1 שלב 1.3
