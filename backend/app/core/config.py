@@ -3,7 +3,6 @@ Application configuration — reads from environment variables.
 All secrets come from .env (local) or platform env vars (Render/Vercel).
 Never hardcode secrets here.
 """
-from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -18,18 +17,12 @@ class Settings(BaseSettings):
     supabase_anon_key: str = ""
     supabase_service_role_key: str = ""
 
-    # CORS — frontend origins allowed to call the API
-    # Accepts comma-separated string from env var, e.g.:
-    # CORS_ORIGINS=https://ti-platform.vercel.app,http://localhost:5173
-    cors_origins: list[str] = ["http://localhost:5173"]
+    # CORS — comma-separated string from env var
+    # e.g. CORS_ORIGINS=https://ti-platform.vercel.app,http://localhost:5173
+    cors_origins: str = "http://localhost:5173"
 
-    @field_validator("cors_origins", mode="before")
-    @classmethod
-    def parse_cors_origins(cls, v: object) -> list[str]:
-        # If the env var is a plain string, split by comma
-        if isinstance(v, str):
-            return [origin.strip() for origin in v.split(",")]
-        return v  # type: ignore[return-value]
+    def get_cors_origins(self) -> list[str]:
+        return [o.strip() for o in self.cors_origins.split(",")]
 
     # Security
     # Minimum response time in ms — prevents timing attacks (see SECURITY-MODEL §4)
